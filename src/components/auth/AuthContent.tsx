@@ -4,14 +4,19 @@ import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
 import { Colors } from "constants/colors";
 import { ICredentials } from "interfaces/ICredentials";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigationParameterList } from "interfaces/AppNavigationParameterList";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type Props = {
   isLogin?: boolean;
-  onAuthenticate?: any;
+  onAuthenticate?: (email: string, password: string) => void;
 };
 
 function AuthContent(props: Props) {
   const { isLogin, onAuthenticate } = props;
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AppNavigationParameterList>>();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
@@ -21,7 +26,11 @@ function AuthContent(props: Props) {
   });
 
   function switchAuthModeHandler() {
-    // Todo
+    if (isLogin) {
+      navigation.replace("SignUp");
+    } else {
+      navigation.replace("Login");
+    }
   }
 
   function submitHandler(credentials: ICredentials) {
@@ -49,7 +58,7 @@ function AuthContent(props: Props) {
       });
       return;
     }
-    onAuthenticate({ email, password });
+    onAuthenticate && onAuthenticate(email, password);
   }
 
   return (

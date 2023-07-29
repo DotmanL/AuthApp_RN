@@ -95,6 +95,7 @@ function AuthForm(props: Props) {
             onUpdateValue={(text: string) =>
               updateInputValueHandler(InputType.confirmPassword, text)
             }
+            secure
             value={enteredConfirmPassword}
             isInvalid={passwordsDontMatch}
           />
